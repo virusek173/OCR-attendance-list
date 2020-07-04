@@ -59,7 +59,7 @@ def save_image(img_num, image):
     print('Saved to {}'.format(image_path))
 
 def get_paper_edges(image):
-      # Zmiana rozmiaru i przekonwertowanie do skali szarości.
+  # Zmiana rozmiaru i przekonwertowanie do skali szarości.
   img = cv2.cvtColor(resize_image_height(image), cv2.COLOR_BGR2GRAY)
   # Bilateral filter do rozmazania obrazka - pozbycie się szumu.
   img = cv2.bilateralFilter(img, 9, 45, 45)
@@ -132,7 +132,6 @@ def get_image_after_perspective_correction(pageContour, image):
   M = cv2.getPerspectiveTransform(sPoints, tPoints)
   newImage = cv2.warpPerspective(image, M, (int(width), int(height)))
 
-  # cv2.imwrite("folder/resultImage.jpg", cv2.cvtColor(newImage, cv2.COLOR_BGR2RGB))
   return newImage  
 
 def perspective_operations(image):
@@ -141,29 +140,3 @@ def perspective_operations(image):
     final_image = get_image_after_perspective_correction(contour, image)
 
     return final_image
-
-
-# To docelowo powinno być w pliku 06_final-recognition.py i odpalać kolejne moduły
-def shoggoth(img_num):
-    image = get_image(img_num)
-    # Wykrycie narożników kartki, skorygowanie perspektywy oraz wycięcie kartki.
-    image_after_perspective_operations = perspective_operations(image)
-    save_image(img_num, image_after_perspective_operations)
-
-    # Usunięcie kratek z kartki Tak, żeby zostały widoczne tylko słowa 
-    # Znajdowanie wierszy 
-    # Znajdowanie wyrazów 
-    # Wykrycie pojedynczych cyfr
-    # Rozpoznanie cyfr
-
-    # Wyświetlanie w jupyterze
-    # cv2_imshow(cv2.cvtColor(resize_image_height(image_after_perspective_operations, 600), cv2.COLOR_BGR2RGB))
-
-# Przypadki trudniejsze
-# image_range = [8, 11, 12, 16, 19, 20, 21, 22, 23]
-image_range = range(1, 30)
-# image_range = range(1, 2)
-
-for image_num in tqdm(image_range):
-    print('image num: {}'.format(image_num))
-    shoggoth(image_num)

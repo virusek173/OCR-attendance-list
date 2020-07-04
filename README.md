@@ -8,3 +8,5 @@
 - final-recognition - Final number recognition.
 
 Each stage is in separate file.
+
+final-recognition.py file should run all modules.
