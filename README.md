@@ -10,3 +10,7 @@
 Each stage is in separate file.
 
 final-recognition.py file should run all modules.
+
+## Development:
+- `pip install -r requirements.txt`
+- `python3 final-recognition.py` 
