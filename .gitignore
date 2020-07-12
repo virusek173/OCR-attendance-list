@@ -3,3 +3,4 @@ out/
 venv/
 __pycache__/
 jupyter tests
+__MACOSX
