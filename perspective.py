@@ -5,9 +5,6 @@ import os
 
 from tqdm import tqdm
 
-data_dir = 'data'
-out_dir = 'out'
-
 
 def resize_image_ratio(image, ratio=0.3):
     old_hight, old_width = image.shape
@@ -46,23 +43,6 @@ def contourOffset(cnt, offset):
     # if value < 0 => replace it by 0
     cnt[cnt < 0] = 0
     return cnt
-
-
-def get_image(img_num):
-    image_path = './{}/img_{}.jpg'.format(data_dir, img_num)
-    image = cv2.cvtColor(cv2.imread(image_path), cv2.COLOR_BGR2RGB)
-    image_to_show = image
-
-    return image_to_show
-
-
-def save_image(img_num, image):
-    if not os.path.exists(out_dir):
-        os.makedirs(out_dir)
-
-    image_path = './{}/img_{}.jpg'.format(out_dir, img_num)
-    cv2.imwrite(image_path, image)
-    print('Saved to {}'.format(image_path))
 
 
 def get_paper_edges(image):
