@@ -2,8 +2,7 @@
 ## Processing stages:
 - perspective - Detecting corners of the paper, correcting the perspective and cutting out the paper.
 - checkered - Removing the checkered from the paper so that only words are visible.
-- rows - finding rows.
-- cols - finding cols.
+- words - detecting words positions.
 - digits - Detection of individual digits.
 - final-recognition - Final number recognition.
 
