@@ -3,7 +3,7 @@ import math
 import numpy as np
 import os
 from tqdm import tqdm
-from utils import get_image, save_image
+from utils import get_image
 from scipy.signal import convolve2d
 import cv2
 
@@ -108,7 +108,7 @@ def removeLines(image):
 
 if __name__ == "__main__":
 
-    for image_num in range(1, 29):
+    for image_num in range(1, 30):
 
         image = get_image(image_num)
         # Plot
