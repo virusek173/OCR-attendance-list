@@ -3,13 +3,8 @@ import math
 import numpy as np
 import os
 from tqdm import tqdm
-# from utils import get_image
 from scipy.signal import convolve2d
 import cv2
-
-# data_dir = 'out'
-# out_dir = 'out2'
-
 
 def eight_neighbor_average_convolve2d_horizontal(x):
     kernel = np.array([
@@ -68,7 +63,6 @@ def eight_neighbor_average_convolve2d_vertical(x):
 
 def removeLines(image):
     image = np.array(image)
-    # croppedImage = image[:, int(len(image[0])/2):]
     image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
     
@@ -83,6 +77,7 @@ def removeLines(image):
 
     cols = horizontal.shape[1]
     horizontal_size = cols // 80
+    horizontal_size = cols // 30
     # Create structure element for extracting horizontal lines through morphology operations
     horizontalStructure = cv2.getStructuringElement(
         cv2.MORPH_RECT, (horizontal_size, 1))
@@ -106,13 +101,6 @@ def removeLines(image):
     x_ver = eight_neighbor_average_convolve2d_horizontal(image)
     x_hor = eight_neighbor_average_convolve2d_vertical(image)
 
-    print("img 0 0", image[0,0])
-
-    print(x_ver.shape)
-
-    print("x_hor", x_hor[0,0])
-    print("verticalTrue", verticalTrue[0][0,0])
-
     lineindex = 0
     assert len(image) == len(verticalTrue[0])
     for line, trueLine in zip(image, verticalTrue[0]):
@@ -133,5 +121,4 @@ def removeLines(image):
             index += 1
         lineindex += 1
 
-    print("img 0 0", image[0,0])
     return image
