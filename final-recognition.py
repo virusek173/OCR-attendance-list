@@ -4,6 +4,7 @@ from perspective import perspective_operations
 from words import detect_words_operations
 from utils import get_image, save_image
 from removeKartkens import removeLines
+from digits import crop_numbers
 from tqdm import tqdm
 
 
@@ -16,8 +17,10 @@ def shoggoth(img_num):
     image_checkered = checkered_operations(image_remove_lines)
     # Znajdowanie wyrazów 
     image_detect_words = detect_words_operations(image_checkered)
+    # Wykrycie indeksów
+    image_crop_numbers = crop_numbers(image_detect_words, image_perspective)
 
-    save_image(img_num, image_detect_words)
+    save_image(img_num, image_crop_numbers)
 
     # Wykrycie pojedynczych cyfr
     # Rozpoznanie cyfr
