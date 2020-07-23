@@ -1,9 +1,10 @@
 import cv2
 import numpy as np
 
-def crop_numbers(image, image_perspective):
-    image_to_crop = image_perspective
-    image_final = image_perspective
+def crop_numbers(image, oryg_image):
+    final_cropped_numbers = []
+    image_to_crop = oryg_image
+    image_final = oryg_image
     contours, im2  = cv2.findContours(image, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
         # get rectangle bounding contour
     bounding_array = [cv2.boundingRect(contour) for contour in contours]
@@ -23,25 +24,45 @@ def crop_numbers(image, image_perspective):
             continue
 
           if ((y - 50 < fy and y + 50 > fy) and fx > x):
-            # print('[x, y]: {}'.format([x, y]))
-            # print('[fx, fy]: {}'.format([fx, fy]))
-
             add_rectangle = False
             break
 
         # draw rectangle around contour on original image
         if (add_rectangle):
-          image_final = cv2.rectangle(image_perspective, (x, y), (x + w, y + h), (255, 0, 255), 2)
+          image_final = cv2.rectangle(oryg_image, (x, y), (x + w, y + h), (255, 0, 255), 2)
         else:
           continue
 
-        #you can crop image and send to OCR  , false detected will return no text :)
+        cropped_number = image_to_crop[y :y +  h , x : x + w]
+        final_cropped_numbers.append(cropped_number)
 
-        # cropped_number = image_to_crop[y :y +  h , x : x + w]
-        # s = file_name + '/crop_' + str(index) + '.jpg' 
-        # cv2.imwrite(s , cropped)
-        # index = index + 1
 
-        # cv2_imshow(cropped_number)
+    return image_final, final_cropped_numbers
 
-    return image_final
+def crop_digits(cropped_numbers):
+  final_cropped_digits = []
+
+  for index, number_image in enumerate(cropped_numbers):
+    final_cropped_digits.append([])
+    contours, _  = cv2.findContours(number_image, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    x_array = np.array([])
+
+    for contour in contours:
+      [x, y, w, h] = cv2.boundingRect(contour)
+      if (w >= 100) or (w < 10 or h < 23 ):
+        continue
+      # print('[x, y, w, h]: {}'.format([x, y, w, h]))
+      x_array = np.append(x_array, x)
+
+      digit_image = number_image[y :y +  h , x : x + w]
+      # temp_array_digits = np.append(temp_array_digits, number_image)
+      final_cropped_digits[index].append(digit_image)
+
+    # Sort digits based on x coordinate
+    x_max_indexes = np.argsort(x_array)
+    final_cropped_digits[index] = [final_cropped_digits[index][i] for i in x_max_indexes]
+
+    # Temp sol. adding number to 0 index
+    final_cropped_digits[index].insert(0, number_image)
+
+  return final_cropped_digits
