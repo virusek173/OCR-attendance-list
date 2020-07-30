@@ -13,10 +13,10 @@ def get_image(img_num):
     return image_to_show
 
 
-def save_image(img_num, image):
+def save_image(img_num, image, extension):
     if not os.path.exists(out_dir):
         os.makedirs(out_dir)
 
-    image_path = './{}/img_{}.jpg'.format(out_dir, img_num)
+    image_path = './{}/img_{}.{}'.format(out_dir, img_num, extension)
     cv2.imwrite(image_path, image)
-    print('Saved to {}'.format(image_path))
+    print('Saved to {}'.format(image_path, ))
