@@ -8,3 +8,19 @@ def checkered_operations(image):
   erode_image = cv2.erode(treshold_image, kernel_ero, cv2.BORDER_REFLECT) 
 
   return erode_image
+
+def checkered_operations_index(image):
+  final_image = image
+  treshold_parameter = 40
+
+  while True:
+    image = cv2.bilateralFilter(image, 3, 3, 3)
+    treshold_image = cv2.adaptiveThreshold(image, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 115, treshold_parameter)
+    image_std = np.std(treshold_image)
+    treshold_parameter -= 1
+
+    if(image_std > 60):
+      final_image = treshold_image
+      break
+
+  return final_image
