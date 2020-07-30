@@ -17,7 +17,7 @@ def shoggoth(img_num):
     image = get_image(img_num, data_dir)
     # print(image.shape)
 
-    #save_image(img_num, image)
+    # save_image(img_num, image)
     # return
     # Wykrycie narożników kartki, skorygowanie perspektywy oraz wycięcie kartki.
     image_perspective, sPoints, tPoints = perspective_operations(image)
@@ -27,7 +27,7 @@ def shoggoth(img_num):
     # Znajdowanie wyrazów
     image_detect_words = detect_words_operations(image_checkered)
     # Wykrycie indeksów
-    #image_crop_numbers = crop_numbers(image_detect_words, image_perspective)
+    # image_crop_numbers = crop_numbers(image_detect_words, image_perspective)
 
     cropped_rectangles = crop_small_rectangles(image_detect_words)
 
@@ -35,11 +35,9 @@ def shoggoth(img_num):
 
     mask = prepare_mask(mask)
 
-    print(sPoints, tPoints)
-
     new_img = move_to_original_coords(mask, sPoints, tPoints, image.shape[:2])
 
-    #finul = apply_mask(image, new_img)
+    # finul = apply_mask(image, new_img)
 
     save_image(img_num, new_img, "png", out_dir)
 

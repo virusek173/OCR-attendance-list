@@ -159,7 +159,7 @@ def paint_lines(image):
 
 def apply_mask(image, mask):
 
-    mask = prepare_mask(mask)
+    #mask = prepare_mask(mask)
     mask = mask.astype(np.uint8)
 
     # print(mask.shape)
