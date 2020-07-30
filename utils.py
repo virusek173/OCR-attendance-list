@@ -1,11 +1,8 @@
 import cv2
 import os
 
-data_dir = 'data'
-out_dir = 'out'
 
-
-def get_image(img_num):
+def get_image(img_num, data_dir):
     image_path = './{}/img_{}.jpg'.format(data_dir, img_num)
     image = cv2.cvtColor(cv2.imread(image_path), cv2.COLOR_BGR2RGB)
     image_to_show = image
@@ -13,7 +10,7 @@ def get_image(img_num):
     return image_to_show
 
 
-def save_image(img_num, image, extension):
+def save_image(img_num, image, extension, out_dir):
     if not os.path.exists(out_dir):
         os.makedirs(out_dir)
 

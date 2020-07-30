@@ -9,9 +9,12 @@ from tqdm import tqdm
 
 from find_lines import *
 
+data_dir = 'data'
+out_dir = 'out'
+
 
 def shoggoth(img_num):
-    image = get_image(img_num)
+    image = get_image(img_num, data_dir)
     # print(image.shape)
 
     #save_image(img_num, image)
@@ -38,7 +41,7 @@ def shoggoth(img_num):
 
     #finul = apply_mask(image, new_img)
 
-    save_image(img_num, new_img, "png")
+    save_image(img_num, new_img, "png", out_dir)
 
     # Wykrycie pojedynczych cyfr
     # Rozpoznanie cyfr
