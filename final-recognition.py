@@ -1,17 +1,25 @@
 # from 01_perspective import *
+import tensorflow as tf 
+
 from checkered import checkered_operations
 from perspective import perspective_operations
 from words import detect_words_operations
-from utils import get_image, save_image
+from utils import get_image, save_image, save_txt
 from removeKartkens import removeLines
 from digits import crop_numbers, crop_digits
 from predict_model import predict_image
 from tqdm import tqdm
+from find_lines import crop_small_rectangles, paint_lines, prepare_mask, move_to_original_coords
+from keras.models import load_model
+
+data_dir = 'data'
+out_dir = 'out'
+pretict_model_path = './final_model.h5'
 
 def shoggoth(img_num):
-    image = get_image(img_num)
+    image = get_image(img_num, data_dir)
     # Wykrycie narożników kartki, skorygowanie perspektywy oraz wycięcie kartki.
-    image_perspective_operations = perspective_operations(image)
+    image_perspective_operations, sPoints, tPoints = perspective_operations(image)
     # Usunięcie kratek z kartki tak, żeby zostały widoczne tylko słowa 
     image_remove_lines_operations = removeLines(image_perspective_operations)
     image_checkered_operations = checkered_operations(image_remove_lines_operations)
@@ -22,38 +30,35 @@ def shoggoth(img_num):
     # Podział na cyfry
     image_crop_digits = crop_digits(cropped_numbers, image)
 
+    cropped_rectangles = crop_small_rectangles(image_detect_words)
+    mask = paint_lines(cropped_rectangles)
+    mask = prepare_mask(mask)
+    new_img = move_to_original_coords(mask, sPoints, tPoints, image.shape[:2])
+    save_image(img_num, new_img, "png", out_dir)
+
     return image_crop_digits
 
 
 image_range = range(1,2)
 
-# for image_num in tqdm(image_range):
-#   print('image num: {}'.format(image_num))
-#   shoggoth(image_num)
-
 image_crop_digits = []
-for image_num in image_range:
+for image_num in tqdm(image_range):
   print('image num: {}'.format(image_num))
   image_crop_digits.append(shoggoth(image_num))
 
 index_array = []
-image_crop_digits
+
+model = tf.keras.models.load_model(pretict_model_path)
 
 for page_number, page in tqdm(enumerate(image_crop_digits)):
     index_array.append([])
     for index_number, image_number in enumerate(page):
         index_array[page_number].append('')
         for index_digit, image_digit in enumerate(image_number):
-            # image_digit = (255-image_digit)
-            predicted_digit = predict_image(image_digit)
+            predicted_digit = predict_image(image_digit, model)
             index_array[page_number][index_number] += str(predicted_digit)
     index_array[page_number].reverse()
 
-# indexes_list = []
 for image_num, page in enumerate(index_array):
-    # image = get_image(image_range[image_num])
-    # cv2_imshow(cv2.cvtColor(resize_image_height(image, 800), cv2.COLOR_BGR2RGB))
+    save_txt((image_num + 1), page, out_dir)
     print('page: {}'.format(page))
-  # filtered_page = [x for x in page if len(x) > 2]
-    # for key, index in enumerate(page):
-        # print('{}. {}'.format(key, index))

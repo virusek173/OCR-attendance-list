@@ -101,6 +101,7 @@ def get_image_after_perspective_correction(pageContour, image):
 
     pageContour = fourCornersSort(pageContour[:, 0])
     pageContour = contourOffset(pageContour, (-5, -5))
+    contourToReturn = pageContour
 
     # Przelicz do oryginalnego rozmiaru
     sPoints = pageContour.dot(image.shape[0] / 800)
@@ -125,12 +126,13 @@ def get_image_after_perspective_correction(pageContour, image):
     M = cv2.getPerspectiveTransform(sPoints, tPoints)
     newImage = cv2.warpPerspective(image, M, (int(width), int(height)))
 
-    return newImage
+    return newImage, sPoints, tPoints
 
 
 def perspective_operations(image):
     edges = get_paper_edges(image)
     contour = get_contour(edges)
-    final_image = get_image_after_perspective_correction(contour, image)
+    final_image, sPoints, tPoints = get_image_after_perspective_correction(
+        contour, image)
 
-    return final_image
+    return final_image, sPoints, tPoints
