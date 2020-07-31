@@ -14,10 +14,10 @@ from keras.models import load_model
 
 local_in_dir = 'data'
 local_out_dir = 'out'
-local_image_range = range(1,2)
+local_image_range = range(1,30)
 pretict_model_path = './final_model.h5'
 
-def all_operations(in_dir, image_range, out_dir):
+def all_operations(in_dir, number_of_images, out_dir):
     def shoggoth(img_num):
         image = get_image(img_num, in_dir)
         # Wykrycie narożników kartki, skorygowanie perspektywy oraz wycięcie kartki.
@@ -40,7 +40,7 @@ def all_operations(in_dir, image_range, out_dir):
 
         return image_crop_digits
 
-
+    image_range = range(1,number_of_images + 1)
 
     image_crop_digits = []
     for image_num in tqdm(image_range):
@@ -61,5 +61,3 @@ def all_operations(in_dir, image_range, out_dir):
     for image_num, page in enumerate(index_array):
         save_txt((image_num + 1), page, out_dir)
         print('page: {}'.format(page))
-
-# all_operations(local_in_dir, local_image_range, local_out_dir)
