@@ -1,15 +1,18 @@
 # OCR-attendance-list
 ## Processing stages:
 - perspective - Detecting corners of the paper, correcting the perspective and cutting out the paper.
-- checkered - Removing the checkered from the paper so that only words are visible.
-- words - detecting words positions.
+- removeKartkens - Detecting and removing lines.
+- checkered - Removing the checkered from the paper so that only words remains visible.
+- words - Detecting words positions.
 - digits - Detection of individual digits.
-- final-recognition - Final number recognition.
+- train_model - Functions to train model.
+- predict_model - Functions to predict model.
+- utils - Helper functions
+- final - Final file run all functions and return result.
 
 Each stage is in separate file.
-
-final-recognition.py file should run all modules.
+final.py file should run all modules.
 
 ## Development:
 - `pip install -r requirements.txt`
-- `python3 final-recognition.py` 
+- `python3 final.py` 
