@@ -1,0 +1,15 @@
+name: piro-ocr
+dependencies:
+  - python=3.7.3
+  - pip=19.0.3=py37_0
+  - pip:
+    - keras==2.4.3
+    - keras-applications==1.0.8
+    - keras-preprocessing==1.1.2
+    - numpy==1.16.4
+    - opencv-python==4.2.0.34
+    - scipy==1.4.1
+    - tensorflow==2.3.0
+    - tensorflow-estimator==2.3.0
+    - tflearn==0.3.2
+    - tqdm==4.48.0
